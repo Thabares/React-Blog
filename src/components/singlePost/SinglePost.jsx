@@ -1,78 +1,44 @@
-import "./singlePost.css"
+import React, { useEffect, useState } from "react";
+import "./singlePost.css";
+import { useLocation } from "react-router";
 
+import axios from "axios";
 export default function SinglePost() {
-    return (
-      <div className="singlePost">
-        <div className="singlePostWrapper">
-          <img
-            src="https://images.pexels.com/photos/6685428/pexels-photo-6685428.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=550"
-            alt=""
-            className="singlePostImg"
-          />
-          <h1 className="singlePostTitle">
-            Lorem Ipsum dolor sit.
-            <div className="singlePostEdit">
-              <i className="singlePostIcon far fa-edit"></i>
-              <i className="singlePostIcon far fa-trash-alt"></i>
-            </div>
-          </h1>
-          <div className="singlePostInfo">
-            <span className="singlePostAuthor">
-              Author: <b>Thabares</b>
-            </span>
-            <span className="singlePostDate">1 hour ago</span>
+  const location = useLocation();
+  const path = location.pathname.split("/")[2];
+  const [post, setPost] = useState({});
+
+  useEffect(() => {
+    const getPost = async () => {
+      const res = await axios.get("/post/" + path);
+      setPost(res.data);
+    };
+
+    getPost();
+  }, [path]);
+  return (
+    <div className="singlePost">
+      <div className="singlePostWrapper">
+        {post.photo && (
+          <img src={post.photo} alt="" className="singlePostImg" />
+        )}
+        <h1 className="singlePostTitle">
+          {post.title}
+          <div className="singlePostEdit">
+            <i className="singlePostIcon far fa-edit"></i>
+            <i className="singlePostIcon far fa-trash-alt"></i>
           </div>
-          <p className="singlePostDesc">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse
-            impedit inventore laudantium praesentium architecto? Qui blanditiis
-            voluptatibus quo nam perspiciatis incidunt perferendis. Laudantium
-            possimus maxime, nulla excepturi repellat dolore ex.
-          </p>
+        </h1>
+        <div className="singlePostInfo">
+          <span className="singlePostAuthor">
+            Author: <b>{post.userName}</b>
+          </span>
+          <span className="singlePostDate">
+            {new Date(post.createdAt).toDateString()}
+          </span>
         </div>
+        <p className="singlePostDesc">{post.desc}</p>
       </div>
-    );
+    </div>
+  );
 }
